@@ -1,0 +1,60 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+type registroAluno {
+  mentor String
+  dia String
+  registro String
+}
+
+model Alunos {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  name String
+  email String @unique
+  avaliacoes String[] // Array com lista de ids de avaliacoes
+  mentor String
+  instituicao String
+  nivelDeEducacao Int
+  registrosSobreOAluno String[] // Registros Diarios
+}
+
+model Mentores {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  name String
+  email String
+  alunosMentorados String[] // Array com lista de ids de alunos
+}
+
+model Competencias {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  aluno String
+  mentorDoAluno String
+  principalCompetencia String
+  outrasCompetencias String[]
+  avaliacaoDoAluno String
+}
+
+model Atividades {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  aluno String
+  mentor String
+  nomeAtividade String
+  descricaoAdicional String
+  realizada Boolean
+}
+
+model Avaliacoes {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  mentor String
+  aluno String
+  avaliacao String
+  comentario String
+}
+
+
