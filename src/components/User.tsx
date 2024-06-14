@@ -1,6 +1,3 @@
-"use client";
-import { PrismaClient } from "@prisma/client/extension";
-
 interface Aluno {
   id: string;
   name: string;
@@ -14,10 +11,19 @@ interface Aluno {
 
 interface UserProps {
   aluno: Aluno;
-  prisma: PrismaClient;
 }
-export default async function User(props: UserProps) {
-  const { prisma } = props;
+
+export default function User(props: UserProps) {
+
+  async function deleteUser() {
+    await fetch("/api/alunos", {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ id: props.aluno.id }),
+    });
+  }
   return (
     <div className="card bg-zinc-800 w-96 p-6 mr-12">
       <p className="card-title">
@@ -41,25 +47,21 @@ export default async function User(props: UserProps) {
           {
             // Futuramente um url que manda para o painel de avaliacoes ao clicar no id
           }
-          {/* <ul>
-                    {props.aluno.avaliacoes.map((av) =>{
-                        return <li><strong>{av}</strong></li>
-                    })}
-                </ul> */}
         </div>
       </div>
       <div className="card-actions flex justify-between">
-        <button className="btn btn-success" onClick={async () => {
+        <button
+          className="btn btn-success"
+          onClick={async () => {
             // Nao adianta fazer o update hoje porque a interface vai mudar toda entao ia basicamente ter de refaze-lo depois
-        }}>Editar</button>
+          }}
+        >
+          Editar
+        </button>
         <button
           className="btn btn-error"
           onClick={async () => {
-            await prisma.alunos.delete({
-              where: {
-                id: props.aluno.id,
-              },
-            });
+            deleteUser()
           }}
         >
           Eliminar
