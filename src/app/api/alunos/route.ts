@@ -1,12 +1,11 @@
 //@ts-nocheck
 import { NextResponse } from "next/server";
-import prisma from "../../../../lib/prisma"
+import prisma from "../../../../lib/prisma";
 
 export async function GET() {
   const users = await prisma!.alunos.findMany();
   return NextResponse.json(users);
 }
-
 
 export async function POST(req: Request) {
   const {
@@ -17,7 +16,7 @@ export async function POST(req: Request) {
     instituicao,
     nivelDeEducacao,
     registrosSobreOAluno,
-  } = req.json();
+  } = await req.json();
   const aluno = await prisma!.alunos.create({
     data: {
       name,
@@ -34,11 +33,11 @@ export async function POST(req: Request) {
 
 export async function DELETE(req: Request) {
   const { id } = await req.json();
-  console.log(id) 
+  console.log(id);
   await prisma!.alunos.delete({
     where: { id: id },
   });
-  return NextResponse.json()
+  return NextResponse.json();
 }
 
 export async function PUT(req: Request) {
@@ -54,13 +53,15 @@ export async function PUT(req: Request) {
   } = req.json();
   const aluno = await prisma!.alunos.update({
     where: { id: id },
-    data: { name,
+    data: {
+      name,
       email,
       avaliacoes,
       mentor,
       instituicao,
       nivelDeEducacao,
-      registrosSobreOAluno, },
+      registrosSobreOAluno,
+    },
   });
   return NextResponse.json(aluno);
 }

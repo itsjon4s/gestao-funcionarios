@@ -11,10 +11,10 @@ interface Aluno {
 
 interface UserProps {
   aluno: Aluno;
+  func: any;
 }
 
 export default function User(props: UserProps) {
-
   async function deleteUser() {
     await fetch("/api/alunos", {
       method: "DELETE",
@@ -61,7 +61,8 @@ export default function User(props: UserProps) {
         <button
           className="btn btn-error"
           onClick={async () => {
-            deleteUser()
+            deleteUser();
+            props.func(Date.now());
           }}
         >
           Eliminar
