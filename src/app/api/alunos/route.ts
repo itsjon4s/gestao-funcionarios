@@ -50,7 +50,7 @@ export async function PUT(req: Request) {
     instituicao,
     nivelDeEducacao,
     registrosSobreOAluno,
-  } = req.json();
+  } = await req.json();
   const aluno = await prisma!.alunos.update({
     where: { id: id },
     data: {
