@@ -63,5 +63,7 @@ export async function PUT(req: Request) {
       registrosSobreOAluno,
     },
   });
-  return NextResponse.json(aluno);
+  return new NextResponse(JSON.stringify(aluno), {
+    status: 200,
+  });
 }

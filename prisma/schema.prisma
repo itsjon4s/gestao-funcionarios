@@ -13,11 +13,16 @@ type registroAluno {
   registro String
 }
 
+type AvaliacaoAluno {
+  qualidade Int
+  area String
+}
+
 model Alunos {
   id String @id @default(auto()) @map("_id") @db.ObjectId
   name String
   email String @unique
-  avaliacoes String[] // Array com lista de ids de avaliacoes
+  avaliacoes AvaliacaoAluno[] 
   mentor String
   instituicao String
   nivelDeEducacao Int

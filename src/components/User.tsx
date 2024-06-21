@@ -1,10 +1,15 @@
 import { useState } from "react";
 
+interface Avaliacao {
+  area: string;
+  qualidade: number;
+}
+
 interface Aluno {
   id: string;
   name: string;
   email: string;
-  avaliacoes: string[];
+  avaliacoes: Avaliacao[];
   mentor: string;
   instituicao: string;
   nivelDeEducacao: number;
@@ -36,7 +41,7 @@ export default function User(props: UserProps) {
     });
   }
   return (
-    <div className="card bg-zinc-800 w-96 p-6 mr-12">
+    <div className="card bg-base-300 w-96 p-6 mr-12 mb-2">
       <p className="card-title">
         Estagiario - <strong>{props.aluno?.name}</strong>
       </p>
@@ -133,8 +138,8 @@ export default function User(props: UserProps) {
                       email,
                       instituicao,
                       nivelDeEducacao,
-                      avaliacoes: [],
-                      registrosSobreOAluno: [],
+                      avaliacoes: props.aluno.avaliacoes,
+                      registrosSobreOAluno: props.aluno.registrosSobreOAluno,
                     }),
                   });
                   setEditando(false);
@@ -161,12 +166,6 @@ export default function User(props: UserProps) {
               Nivel de Educacacao:{" "}
               <strong>{props.aluno?.nivelDeEducacao}</strong>
             </span>
-            <div>
-              <span>Avaliacoes:</span>
-              {
-                // Futuramente um url que manda para o painel de avaliacoes ao clicar no id
-              }
-            </div>
             <div className="card-actions flex justify-between">
               <button
                 className="btn btn-success"
