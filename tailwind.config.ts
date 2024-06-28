@@ -9,6 +9,17 @@ const config: Config = {
   theme: {
     extend: {},
   },
+  daisyui: {
+    themes: [
+      {
+        mytheme: {
+          primary: "#2012D5",
+          secondary: "#F83C10",
+          "base-100": "#ffffff",
+        },
+      },
+    ],
+  },
   plugins: [require("daisyui")],
 };
 export default config;

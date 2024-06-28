@@ -4,21 +4,27 @@ export default function Navbar() {
       <div className="navbar-center space-x-2">
         <a
           href="/"
-          className="btn btn-primary text-lg text-white hover:btn-error"
+          className="btn btn-primary text-lg text-white hover:btn-secondary"
         >
           Gestao de Utilizadores
         </a>
         <a
           href="/avaliacoes"
-          className="btn btn-primary text-lg text-white hover:btn-error"
+          className="btn btn-primary text-lg text-white hover:btn-secondary"
         >
           Avaliações
         </a>
         <a
-          href="monitorização"
-          className="btn btn-primary text-lg text-white hover:btn-error"
+          href="/monitorizacao"
+          className="btn btn-primary text-lg text-white hover:btn-secondary"
         >
           Monitorização
+        </a>
+        <a
+          href="/registro"
+          className="btn btn-primary text-lg text-white hover:btn-secondary"
+        >
+          Registro
         </a>
       </div>
     </div>

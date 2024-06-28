@@ -1,13 +1,11 @@
 "use client";
 
-import AvaliarUsuario from "@/components/AvaliarUsuario";
+import { useState, useEffect } from "react";
 import Navbar from "@/components/Nabvbar";
-import { useEffect, useState } from "react";
 import type { Aluno } from "@/components/User";
-
-export default function Avaliacoes() {
+import GerirRegistros from "@/components/GeirRegistros";
+export default function Registro() {
   const [alunos, setAlunos] = useState<Aluno[]>([]);
-  const [alterar, setAlterar] = useState(0);
 
   const fetchAlunos = () => {
     fetch("/api/alunos").then((x) => {
@@ -16,24 +14,23 @@ export default function Avaliacoes() {
       });
     });
   };
-
   useEffect(() => {
     fetchAlunos();
-  }, [alterar]);
+  }, []);
 
   return (
     <div>
       <Navbar />
-      <div className="  space-y-4">
-        <div className="flex">
+      <div className="space-y-4">
+        <div className="flex justify-between">
           <h1 className="text-3xl">
-            Painel de Controle - <strong>Avaliações</strong>
+            Painel de Controle - <strong>Estagiarios</strong>
           </h1>
         </div>
         <div className="flex flex-wrap">
-          {alunos.map((aluno, i) => (
-            <AvaliarUsuario aluno={aluno} key={i}></AvaliarUsuario>
-          ))}
+          {alunos.map((x) => {
+            return <GerirRegistros x={x} />;
+          })}
         </div>
       </div>
     </div>

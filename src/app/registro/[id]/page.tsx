@@ -30,35 +30,29 @@ export default function () {
         <div className="card p-4 rounded-lg">
           <div className="card-title text-xl">
             <h1>
-              Avaliações de <strong>{aluno?.name}</strong>
+              Registros de <strong>{aluno?.name}</strong>
             </h1>
           </div>
           <div className="card-body">
             <div className="flex flex-row flex-wrap">
-              {aluno?.avaliacoes?.length >= 1 ? (
-                aluno?.avaliacoes?.map((x, i) => {
+              {aluno?.registrosSobreOAluno?.length >= 1 ? (
+                aluno?.registrosSobreOAluno?.map((x, i) => {
                   return (
                     <div className="w-1/3 mb-2">
                       <div className="card bg-base-300 w-72 p-2 rounded-lg">
                         <div className="card-title">
-                          Avaliação <strong>N{i + 1}</strong>
+                          Registro <strong>N{i + 1}</strong>
                         </div>
                         <div className="card-body">
                           <span>
-                            Qualidade: <strong>{x.qualidade}</strong>/10
+                            Dia: <strong>{x.dia}</strong>
                           </span>
                           <span>
-                            Area: <strong>{x.area}</strong>
+                            Registro: <strong>{x.registro}</strong>
                           </span>
-                          {x.comentario ? (
-                            <>
-                              <span>
-                                Comentario: <strong>{x.comentario}</strong>
-                              </span>
-                            </>
-                          ) : (
-                            ""
-                          )}
+                          <span>
+                            Mentor: <strong>{x.mentor}</strong>
+                          </span>
                         </div>
                       </div>
                     </div>
@@ -66,7 +60,7 @@ export default function () {
                 })
               ) : (
                 <div>
-                  <h1>Sem avaliações ainda.</h1>
+                  <h1>Sem registros ainda.</h1>
                 </div>
               )}
             </div>

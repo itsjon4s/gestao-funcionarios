@@ -3,21 +3,7 @@
 import Grafico from "@/components/Grafico";
 import Navbar from "@/components/Nabvbar";
 import React, { useEffect, useState } from "react";
-interface Avaliacao {
-  area: string;
-  qualidade: number;
-}
-
-interface Aluno {
-  id: string;
-  name: string;
-  email: string;
-  avaliacoes: Avaliacao[];
-  mentor: string;
-  instituicao: string;
-  nivelDeEducacao: number;
-  registrosSobreOAluno: string[];
-}
+import type { Aluno } from "@/components/User";
 
 interface Data {
   name: string;

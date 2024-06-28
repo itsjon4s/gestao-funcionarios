@@ -1,11 +1,18 @@
 import { useState } from "react";
 
-interface Avaliacao {
+export interface Avaliacao {
   area: string;
   qualidade: number;
+  comentario?: string;
 }
 
-interface Aluno {
+interface Registro {
+  mentor: string;
+  dia: string;
+  registro: string;
+}
+
+export interface Aluno {
   id: string;
   name: string;
   email: string;
@@ -13,7 +20,7 @@ interface Aluno {
   mentor: string;
   instituicao: string;
   nivelDeEducacao: number;
-  registrosSobreOAluno: string[];
+  registrosSobreOAluno: Registro[];
 }
 
 interface UserProps {
