@@ -26,6 +26,12 @@ export default function Navbar() {
         >
           Registro
         </a>
+        <a
+          href="/guia"
+          className="btn btn-primary text-lg text-white hover:btn-secondary"
+        >
+          GUIA
+        </a>
       </div>
     </div>
   );
