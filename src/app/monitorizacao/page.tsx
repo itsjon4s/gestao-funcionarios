@@ -13,12 +13,6 @@ interface Data {
 
 export default function Home() {
   const [alunos, setAlunos] = useState<Aluno[]>([]);
-  const [alterar, setAlterar] = useState(0);
-  const [data1, setData1] = useState<Data[]>([{ name: "A", uv: 40, amt: 40 }]);
-  const [data2, setData2] = useState<Data[]>([{ name: "A", uv: 40, amt: 40 }]);
-  const [data3, setData3] = useState<Data[]>([{ name: "A", uv: 40, amt: 40 }]);
-  const [data4, setData4] = useState<Data[]>([{ name: "A", uv: 40, amt: 40 }]);
-
   const fetchAlunos = async () => {
     fetch("/api/alunos").then((x) => {
       x.json().then((d) => {
@@ -26,11 +20,19 @@ export default function Home() {
       });
     });
   };
+  const [alterar, setAlterar] = useState(0);
+  const [data1, setData1] = useState<Data[]>([{ name: "A", uv: 40, amt: 40 }]);
+  const [data2, setData2] = useState<Data[]>([{ name: "A", uv: 40, amt: 40 }]);
+  const [data3, setData3] = useState<Data[]>([{ name: "A", uv: 40, amt: 40 }]);
+  const [data4, setData4] = useState<Data[]>([{ name: "A", uv: 40, amt: 40 }]);
+
 
   useEffect(() => {
     fetchAlunos();
     //@ts-ignore
   }, [alterar]);
+
+  
   useEffect(() => {
     setData1(
       alunos.map(
@@ -139,7 +141,7 @@ export default function Home() {
         [alunos]
       )
     );
-  });
+  }, [alunos]);
 
   return (
     <div>

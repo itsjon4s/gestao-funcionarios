@@ -4,7 +4,7 @@ import { useParams } from "next/navigation";
 import { useState, useEffect } from "react";
 import type { Aluno } from "@/components/User";
 
-export default function () {
+export default function AvaliacaoEstagiario() {
   const [alunos, setAlunos] = useState<Aluno[]>([]);
 
   const params = useParams();
@@ -38,7 +38,7 @@ export default function () {
               {aluno?.avaliacoes?.length >= 1 ? (
                 aluno?.avaliacoes?.map((x, i) => {
                   return (
-                    <div className="w-1/3 mb-2">
+                    <div className="w-1/3 mb-2" key={i}>
                       <div className="card bg-base-300 w-72 p-2 rounded-lg">
                         <div className="card-title">
                           Avaliação <strong>N{i + 1}</strong>

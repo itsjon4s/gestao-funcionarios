@@ -3,14 +3,14 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Navbar from "@/components/Nabvbar";
+import Link from "next/link";
 
-export default function adicionarEstagiario() {
+export default function AdicionarEstagiario() {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [mentor, setMentor] = useState("");
   const [instituicao, setInstituicao] = useState("");
   const [nivelDeEducacao, setNivelDeEducacao] = useState(0);
-
   const router = useRouter();
 
   return (
@@ -123,9 +123,9 @@ export default function adicionarEstagiario() {
             </div>
           </div>
         </div>
-        <a href="/">
+        <Link href="/">
           <button className="btn">Votlar a pagina inicial</button>
-        </a>
+        </Link>
       </div>
     </div>
   );

@@ -1,4 +1,4 @@
-"use client";
+'use client'
 
 import AvaliarUsuario from "@/components/AvaliarUsuario";
 import Navbar from "@/components/Nabvbar";

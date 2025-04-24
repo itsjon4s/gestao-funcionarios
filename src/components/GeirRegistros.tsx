@@ -53,6 +53,7 @@ export default function GerirRegistros({ x }: PropsGerirRegistros) {
                 className="input input-bordered"
                 value={dia}
                 onChange={(x) => setDia(x.target.value)}
+                
               />
             </div>
             <div className="flex justify-between mt-4">

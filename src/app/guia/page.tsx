@@ -8,7 +8,7 @@ export default function Guia() {
         <h1 className="text-xl font-bold">Pagina de Gestao de utilizadores</h1>
         <span>
           Nesta pagina sera mostrado uma pagina em que sera listado todos os
-          estagiarios da emrpesa
+          estagiarios da empresa
         </span>
         <span>
           Em cada utilizador apos mostrar as suas informacoes, existem 2 opcoes,
@@ -22,9 +22,9 @@ export default function Guia() {
           alterar as informacoes do estagiario
         </span>
         <span>
-          E no canto da pagina existe o botao "Adicionar Estagiario" que ao
-          clicar no mesmo sera redirecionado para outra pagina com um formulario
-          para preencher com as informacoes do mesmo
+          E no canto da pagina existe o botao &apos;Adicionar Estagiario&apos;
+          que ao clicar no mesmo sera redirecionado para outra pagina com um
+          formulario para preencher com as informacoes do mesmo
         </span>
         <h1 className="text-xl font-bold">Painel de Avaliacoes</h1>
         <span>
