@@ -28,8 +28,8 @@ export default function Registro() {
           </h1>
         </div>
         <div className="flex flex-wrap">
-          {alunos.map((x) => {
-            return <GerirRegistros x={x} />;
+          {alunos.map((x, i) => {
+            return <GerirRegistros x={x} key={i} />;
           })}
         </div>
       </div>

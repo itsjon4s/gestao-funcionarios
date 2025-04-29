@@ -34,7 +34,7 @@ export default function AvaliarUsuario({ aluno }: AvaliarUsuarioProps) {
             className={`btn ${visibilidade ? "" : "hidden"}`}
             onClick={() => {
               setMenuAdicionar(true);
-              setVisibilidade(false)
+              setVisibilidade(false);
             }}
           >
             Adicionar Avaliacao
@@ -55,7 +55,7 @@ export default function AvaliarUsuario({ aluno }: AvaliarUsuarioProps) {
                 className="input input-bordered"
                 name="qualidade"
                 value={qualTrab}
-                onChange={(aluno) => setQualTrab(parseInt(aluno.target.value))}
+                onChange={(aluno) => setQualTrab(Number(aluno.target.value))}
                 max={10}
                 min={0}
               />
@@ -99,7 +99,7 @@ export default function AvaliarUsuario({ aluno }: AvaliarUsuarioProps) {
                 className="btn btn-error"
                 onClick={() => {
                   setMenuAdicionar(false);
-                  setVisibilidade(true)
+                  setVisibilidade(true);
                 }}
               >
                 Cancelar
@@ -129,7 +129,7 @@ export default function AvaliarUsuario({ aluno }: AvaliarUsuarioProps) {
                     }),
                   });
                   setMenuAdicionar(false);
-                  setVisibilidade(true)
+                  setVisibilidade(true);
                 }}
               >
                 Submenter
