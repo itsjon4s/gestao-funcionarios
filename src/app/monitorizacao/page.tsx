@@ -20,123 +20,66 @@ export default function Home() {
       });
     });
   };
-  const [alterar, setAlterar] = useState(0);
   const [data1, setData1] = useState<Data[]>([{ name: "A", uv: 40, amt: 40 }]);
   const [data2, setData2] = useState<Data[]>([{ name: "A", uv: 40, amt: 40 }]);
   const [data3, setData3] = useState<Data[]>([{ name: "A", uv: 40, amt: 40 }]);
   const [data4, setData4] = useState<Data[]>([{ name: "A", uv: 40, amt: 40 }]);
 
-
   useEffect(() => {
     fetchAlunos();
     //@ts-ignore
-  }, [alterar]);
+  }, []);
+  function d(data: any, type: string) {
+    return {
+      name: data?.name,
+      uv: data?.avaliacoes
+        .filter((x: { area: string }) => x.area == type)
+        ?.map((x: { qualidade: number }) => x.qualidade)
+        ? data?.avaliacoes
+            .filter((x: { area: string }) => x.area == type)
+            ?.map((x: { qualidade: number }) => x.qualidade)
+            .reduce((acc: number, c: number) => acc + c, 0)
+        : 0,
+      amt: data?.avaliacoes
+        .filter((x: { area: string }) => x.area == type)
+        ?.map((x: { qualidade: any }) => x.qualidade)
+        ? data?.avaliacoes
+            .filter((x: { area: string }) => x.area == type)
+            ?.map((x: { qualidade: any }) => x.qualidade)
+            .reduce((acc: number, c: number) => acc + c, 0)
+        : 0,
+    };
+  }
 
-  
   useEffect(() => {
     setData1(
       alunos.map(
-        (a) => {
-          return {
-            name: a?.name,
-            uv: a?.avaliacoes
-              .filter((x) => x.area == "Front-End")
-              ?.map((x) => x.qualidade)
-              ? a?.avaliacoes
-                  .filter((x) => x.area == "Front-End")
-                  ?.map((x) => x.qualidade)
-                  .reduce((acc, c) => acc + c)
-              : 0,
-            amt: a?.avaliacoes
-              .filter((x) => x.area == "Front-End")
-              ?.map((x) => x.qualidade)
-              ? a?.avaliacoes
-                  .filter((x) => x.area == "Front-End")
-                  ?.map((x) => x.qualidade)
-                  .reduce((acc, c) => acc + c)
-              : 0,
-          };
+        (data) => {
+          return d(data, "Front-End");
         },
         [alunos]
       )
     );
-    //
     setData2(
       alunos.map(
-        (a) => {
-          return {
-            name: a?.name,
-            uv: a?.avaliacoes
-              .filter((x) => x.area == "Back-End")
-              ?.map((x) => x.qualidade)
-              ? a?.avaliacoes
-                  .filter((x) => x.area == "Back-End")
-                  ?.map((x) => x.qualidade)
-                  .reduce((acc, c) => acc + c)
-              : 0,
-            amt: a?.avaliacoes
-              .filter((x) => x.area == "Back-End")
-              ?.map((x) => x.qualidade)
-              ? a?.avaliacoes
-                  .filter((x) => x.area == "Back-End")
-                  ?.map((x) => x.qualidade)
-                  .reduce((acc, c) => acc + c)
-              : 0,
-          };
+        (data) => {
+          return d(data, "Back-End");
         },
         [alunos]
       )
     );
-    //
     setData3(
       alunos.map(
-        (a) => {
-          return {
-            name: a?.name,
-            uv: a?.avaliacoes
-              .filter((x) => x.area == "Banco de Dados")
-              ?.map((x) => x.qualidade)
-              ? a?.avaliacoes
-                  .filter((x) => x.area == "Banco de Dados")
-                  ?.map((x) => x.qualidade)
-                  .reduce((acc, c) => acc + c)
-              : 0,
-            amt: a?.avaliacoes
-              .filter((x) => x.area == "Banco de Dados")
-              ?.map((x) => x.qualidade)
-              ? a?.avaliacoes
-                  .filter((x) => x.area == "Banco de Dados")
-                  ?.map((x) => x.qualidade)
-                  .reduce((acc, c) => acc + c)
-              : 0,
-          };
+        (data) => {
+          return d(data, "Banco de Dados");
         },
         [alunos]
       )
     );
-    //
     setData4(
       alunos.map(
-        (a) => {
-          return {
-            name: a?.name,
-            uv: a?.avaliacoes
-              .filter((x) => x.area == "Design Grafico")
-              ?.map((x) => x.qualidade)
-              ? a?.avaliacoes
-                  .filter((x) => x.area == "Design Grafico")
-                  ?.map((x) => x.qualidade)
-                  .reduce((acc, c) => acc + c)
-              : 0,
-            amt: a?.avaliacoes
-              .filter((x) => x.area == "Design Grafico")
-              ?.map((x) => x.qualidade)
-              ? a?.avaliacoes
-                  .filter((x) => x.area == "Design Grafico")
-                  ?.map((x) => x.qualidade)
-                  .reduce((acc, c) => acc + c)
-              : 0,
-          };
+        (data) => {
+          return d(data, "Design Grafico");
         },
         [alunos]
       )

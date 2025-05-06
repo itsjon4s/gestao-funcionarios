@@ -20,7 +20,7 @@ type registroAluno {
 }
 
 type AvaliacaoAluno {
-  qualidade Int
+  qualidade Int @default(0)
   area      String
   comentario String?
 }
@@ -29,7 +29,7 @@ model Alunos {
   id                   String           @id @default(auto()) @map("_id") @db.ObjectId
   name                 String
   email                String           @unique
-  avaliacoes           AvaliacaoAluno[]
+  avaliacoes           AvaliacaoAluno[] 
   mentor               String
   instituicao          String
   nivelDeEducacao      Int
