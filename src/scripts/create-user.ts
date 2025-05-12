@@ -8,6 +8,7 @@ async function main() {
     data: {
       email: "admin@devscope.com",
       password: passwordHash,
+      admin: true
     },
   });
 
