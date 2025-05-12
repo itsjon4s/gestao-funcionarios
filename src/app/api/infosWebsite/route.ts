@@ -2,14 +2,14 @@
 import { NextResponse } from "next/server";
 import { prisma } from "../../../lib/prisma";
 
-export async function GET() {1
+export async function GET() {
   const infos = await prisma!.infos.findFirst();
   return NextResponse.json(infos);
 }
 
 export async function PUT(req: Request) {
   const { niveisDeEducacao, instituicoes } = await req.json();
-  const info = await prisma!.infos.findFirst().update({
+  const info = await prisma!.infos.updateMany({
     data: {
       niveisDeEducacao,
       instituicoes,

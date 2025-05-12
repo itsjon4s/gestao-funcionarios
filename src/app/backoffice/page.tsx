@@ -127,11 +127,11 @@ export default function Registro() {
             </ol>
           </div>
           <div>
-            <a href="/adicionarInstituicao">
+            {/* <a href="/adicionarInstituicao">
               <button className="btn btn-primary text-white hover:btn-error text-lg">
                 Adicionar nível de educacao
               </button>
-            </a>
+            </a> */}
           </div>
         </div>
       </div>
