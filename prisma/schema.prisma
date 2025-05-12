@@ -11,6 +11,7 @@ model User {
   id       String  @id @default(auto()) @map("_id") @db.ObjectId
   email    String  @unique
   password String
+  admin    Boolean
 }
 
 type registroAluno {
@@ -32,7 +33,7 @@ model Alunos {
   avaliacoes           AvaliacaoAluno[] 
   mentor               String
   instituicao          String
-  nivelDeEducacao      Int
+  nivelDeEducacao      String
   registrosSobreOAluno registroAluno[] // Registros Diarios
 }
 
@@ -40,7 +41,7 @@ model Mentores {
   id               String   @id @default(auto()) @map("_id") @db.ObjectId
   name             String
   email            String
-  alunosMentorados String[] // Array com lista de ids de alunos
+  alunosMentorados String[] 
 }
 
 model Competencias {
@@ -52,4 +53,8 @@ model Competencias {
   avaliacaoDoAluno     String
 }
 
-
+model Infos {
+  id                   String   @id @default(auto()) @map("_id") @db.ObjectId
+  niveisDeEducacao String[]
+  instituicoes String[]
+}

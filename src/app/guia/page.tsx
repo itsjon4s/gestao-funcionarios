@@ -1,3 +1,5 @@
+"use client"
+
 import Navbar from "@/components/Nabvbar";
 
 export default function Guia() {

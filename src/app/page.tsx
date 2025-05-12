@@ -21,7 +21,7 @@ export default function Home() {
   return (
     <div>
       <Navbar />
-      <div className="  space-y-4">
+      <div className="space-y-4">
         <div className="flex justify-between">
           <h1 className="text-3xl">
             Painel de Controle - <strong>Estagiarios</strong>
