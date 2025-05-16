@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from "react";
 import Navbar from "@/components/Nabvbar";
-import type { Aluno } from "@/components/User";
-import GerirRegistros from "@/components/GeirRegistros";
+import type { Aluno } from "@/types/users";
+import GerirRegistros from "@/components/users/GerirRegistros";
 export default function Registro() {
   const [alunos, setAlunos] = useState<Aluno[]>([]);
 
@@ -28,8 +28,8 @@ export default function Registro() {
           </h1>
         </div>
         <div className="flex flex-wrap">
-          {alunos.map((x) => {
-            return <GerirRegistros x={x} />;
+          {alunos.map((x, i) => {
+            return <GerirRegistros x={x} key={i} />;
           })}
         </div>
       </div>

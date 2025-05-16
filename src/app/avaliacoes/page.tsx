@@ -1,9 +1,9 @@
-"use client";
+'use client'
 
-import AvaliarUsuario from "@/components/AvaliarUsuario";
+import AvaliarUsuario from "@/components/users/AvaliarUser";
 import Navbar from "@/components/Nabvbar";
 import { useEffect, useState } from "react";
-import type { Aluno } from "@/components/User";
+import type { Aluno } from "@/types/users";
 
 export default function Avaliacoes() {
   const [alunos, setAlunos] = useState<Aluno[]>([]);

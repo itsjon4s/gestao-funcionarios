@@ -1,27 +1,5 @@
-import { useState } from "react";
-
-export interface Avaliacao {
-  area: string;
-  qualidade: number;
-  comentario?: string;
-}
-
-interface Registro {
-  mentor: string;
-  dia: string;
-  registro: string;
-}
-
-export interface Aluno {
-  id: string;
-  name: string;
-  email: string;
-  avaliacoes: Avaliacao[];
-  mentor: string;
-  instituicao: string;
-  nivelDeEducacao: number;
-  registrosSobreOAluno: Registro[];
-}
+import { useEffect, useState } from "react";
+import type { Aluno, Mentor, Infos } from "@/types/users";
 
 interface UserProps {
   aluno: Aluno;
@@ -38,6 +16,30 @@ export default function User(props: UserProps) {
     props.aluno.nivelDeEducacao
   );
 
+  const [mentores, setMentores] = useState<Mentor[]>([]);
+  const [infos, setInfos] = useState<Infos>({
+    instituicoes: [],
+    niveisDeEducacao: [],
+    id: "",
+    areas: [],
+  });
+
+  const initialFetch = () => {
+    fetch("/api/mentores").then((x) => {
+      x.json().then((d) => {
+        setMentores(d);
+      });
+    });
+    fetch("/api/infosWebsite").then((x) => {
+      x.json().then((d) => {
+        setInfos(d);
+      });
+    });
+  };
+  useEffect(() => {
+    initialFetch();
+  }, []);
+
   async function deleteUser() {
     await fetch("/api/alunos", {
       method: "DELETE",
@@ -47,6 +49,7 @@ export default function User(props: UserProps) {
       body: JSON.stringify({ id: props.aluno.id }),
     });
   }
+
   return (
     <div className="card bg-base-300 w-96 p-6 mr-12 mb-2">
       <p className="card-title">
@@ -66,6 +69,7 @@ export default function User(props: UserProps) {
                 name="email"
                 value={email}
                 onChange={(x) => setEmail(x.target.value)}
+                required
               />
             </div>
             <div className="form-control">
@@ -78,44 +82,63 @@ export default function User(props: UserProps) {
                 name="name"
                 value={name}
                 onChange={(x) => setName(x.target.value)}
+                required
               />
             </div>
             <div className="form-control">
               <label className="label">
                 <span className="label-text">Mentor</span>
               </label>
-              <input
-                placeholder="Qual o mentor dele(a)?"
-                className="input input-bordered"
-                name="mentor"
-                value={mentor}
-                onChange={(x) => setMentor(x.target.value)}
-              />
+              <select
+                className="select"
+                required
+                onChange={(x) => {
+                  return setMentor(x.target.value);
+                }}
+              >
+                <option disabled selected>
+                  Qual o mentor dele(a)
+                </option>
+                {mentores.map((x, i) => (
+                  <option key={i}>{x.name}</option>
+                ))}
+              </select>
             </div>
             <div className="form-control">
               <label className="label">
                 <span className="label-text">Instituicao</span>
               </label>
-              <input
-                placeholder="Qual a instituicao de ensino?"
-                className="input input-bordered"
-                name="instituicao"
-                value={instituicao}
-                onChange={(x) => setInstituicao(x.target.value)}
-              />
+              <select
+                className="select"
+                required
+                onChange={(x) => {
+                  return setInstituicao(x.target.value);
+                }}
+              >
+                <option disabled selected>
+                  Qual a instituicao de ensino?
+                </option>
+                {infos.instituicoes.map((x, i) => (
+                  <option key={i}>{x}</option>
+                ))}
+              </select>
             </div>
             <div className="form-control">
               <label className="label">
                 <span className="label-text">Nivel de Educacacao</span>
               </label>
-              <input
-                type="number"
-                placeholder="Qual o nivel de ensino?"
-                className="input input-bordered"
-                name="nivelDeEducacao"
-                value={nivelDeEducacao}
-                onChange={(x) => setNivelDeEducacao(parseInt(x.target.value))}
-              />
+              <select
+                className="select"
+                required
+                onChange={(x) => setNivelDeEducacao(x.target.value)}
+              >
+                <option disabled selected>
+                  Qual o nivel de ensino?
+                </option>
+                {infos.niveisDeEducacao.map((x, i) => (
+                  <option key={i}>{x}</option>
+                ))}
+              </select>
             </div>
             <div className="flex justify-between pt-2">
               <button
@@ -141,10 +164,10 @@ export default function User(props: UserProps) {
                     body: JSON.stringify({
                       id: props.aluno.id,
                       name,
-                      mentor,
+                      mentor: mentor,
                       email,
-                      instituicao,
-                      nivelDeEducacao,
+                      instituicao: instituicao,
+                      nivelDeEducacao: nivelDeEducacao,
                       avaliacoes: props.aluno.avaliacoes,
                       registrosSobreOAluno: props.aluno.registrosSobreOAluno,
                     }),
@@ -153,6 +176,7 @@ export default function User(props: UserProps) {
                   props.func(Date.now());
                 }}
                 className="btn btn-success"
+                type="submit"
               >
                 Guardar
               </button>
