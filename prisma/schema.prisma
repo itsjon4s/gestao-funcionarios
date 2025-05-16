@@ -57,4 +57,5 @@ model Infos {
   id                   String   @id @default(auto()) @map("_id") @db.ObjectId
   niveisDeEducacao String[]
   instituicoes String[]
+  areas String[]
 }

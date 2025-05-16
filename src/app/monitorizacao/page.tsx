@@ -3,13 +3,7 @@
 import Grafico from "@/components/Grafico";
 import Navbar from "@/components/Nabvbar";
 import React, { useEffect, useState } from "react";
-import type { Aluno } from "@/components/User";
-
-interface Data {
-  name: string;
-  uv: number;
-  amt: number;
-}
+import type { Aluno, Infos } from "@/types/users";
 
 export default function Home() {
   const [alunos, setAlunos] = useState<Aluno[]>([]);
@@ -20,13 +14,24 @@ export default function Home() {
       });
     });
   };
-  const [data1, setData1] = useState<Data[]>([{ name: "A", uv: 40, amt: 40 }]);
-  const [data2, setData2] = useState<Data[]>([{ name: "A", uv: 40, amt: 40 }]);
-  const [data3, setData3] = useState<Data[]>([{ name: "A", uv: 40, amt: 40 }]);
-  const [data4, setData4] = useState<Data[]>([{ name: "A", uv: 40, amt: 40 }]);
+  const [infos, setInfos] = useState<Infos>({
+    instituicoes: [],
+    niveisDeEducacao: [],
+    id: "",
+    areas: [],
+  });
+
+  const initialFetch = () => {
+    fetch("/api/infosWebsite").then((x) => {
+      x.json().then((d) => {
+        setInfos(d);
+      });
+    });
+  };
 
   useEffect(() => {
     fetchAlunos();
+    initialFetch();
     //@ts-ignore
   }, []);
   function d(data: any, type: string) {
@@ -51,47 +56,12 @@ export default function Home() {
     };
   }
 
-  useEffect(() => {
-    setData1(
-      alunos.map(
-        (data) => {
-          return d(data, "Front-End");
-        },
-        [alunos]
-      )
-    );
-    setData2(
-      alunos.map(
-        (data) => {
-          return d(data, "Back-End");
-        },
-        [alunos]
-      )
-    );
-    setData3(
-      alunos.map(
-        (data) => {
-          return d(data, "Banco de Dados");
-        },
-        [alunos]
-      )
-    );
-    setData4(
-      alunos.map(
-        (data) => {
-          return d(data, "Design Grafico");
-        },
-        [alunos]
-      )
-    );
-  }, [alunos]);
-
   return (
     <div>
       <Navbar />
       <div className="space-y-4">
         <h1 className="text-3xl">
-          Painel de Controle - <strong>monitorização</strong>
+          Painel de Controle - <strong>Monitorização</strong>
         </h1>
         <div className="card bg-base-300 p-4">
           <div className="card-title"></div>
@@ -100,33 +70,23 @@ export default function Home() {
           </h1>
           <div className="card-body flex flex-col space-y-6 ">
             <div className="flex justify-between bg-base-100 space-x-4 p-10 rounded-lg">
-              <div>
-                <h1 className="text-xl">
-                  <strong>Front-End</strong>
-                </h1>
-                <Grafico data={data1} />
-              </div>
-              <div>
-                <h1 className="text-xl">
-                  <strong>Back-End</strong>
-                </h1>
-                <Grafico data={data2} />
-              </div>
-            </div>
-
-            <div className="flex justify-between bg-base-100 space-x-4 p-10 rounded-lg">
-              <div>
-                <h1 className="text-xl">
-                  <strong>Banco de Dados</strong>
-                </h1>
-                <Grafico data={data3} />
-              </div>
-              <div>
-                <h1 className="text-xl">
-                  <strong>Design Grafico</strong>
-                </h1>
-                <Grafico data={data4} />
-              </div>
+              {infos.areas.map((x, i) => {
+                return (
+                  <div key={i}>
+                    <h1 className="text-xl">
+                      <strong>{x}</strong>
+                    </h1>
+                    <Grafico
+                      data={alunos.map(
+                        (data) => {
+                          return d(data, x);
+                        },
+                        [alunos]
+                      )}
+                    />
+                  </div>
+                );
+              })}
             </div>
           </div>
         </div>

@@ -1,6 +1,7 @@
 //@ts-nocheck
 import { NextResponse } from "next/server";
 import { prisma } from "../../../lib/prisma";
+import bcrypt from "bcryptjs";
 
 export async function GET() {
   const users = await prisma!.mentores.findMany();
@@ -16,13 +17,23 @@ export async function POST(req: Request) {
       alunosMentorados,
     },
   });
+  const passwordHash = await bcrypt.hash("1234", 10);
+
+  await prisma.user.create({
+    data: {
+      email: email,
+      password: passwordHash,
+      admin: false,
+    },
+  });
+
   return NextResponse.json(mentor);
 }
 
 export async function DELETE(req: Request) {
   const { id } = await req.json();
   console.log(id);
-  await prisma!.alunos.delete({
+  await prisma!.mentores.delete({
     where: { id: id },
   });
   return NextResponse.json();

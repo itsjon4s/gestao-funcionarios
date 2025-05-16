@@ -34,14 +34,14 @@ export default function AdicionarMentor() {
       <div className="flex justify-between space-x-2">
         <div className="hero bg-base-200">
           <div className="card p-4 text-center text-3xl">
-            <h1>Adicionar uma Instituicao</h1>
+            <h1>Adicionar uma area</h1>
             <form className="card-body">
               <div className="form-control">
                 <label className="label">
                   <span className="label-text">Nome</span>
                 </label>
                 <input
-                  placeholder="Nome da Instituicao?"
+                  placeholder="Nome da Area?"
                   className="input input-bordered"
                   name="name"
                   value={name}
@@ -62,7 +62,7 @@ export default function AdicionarMentor() {
               <button
                 className="btn btn-success"
                 onClick={async () => {
-                  infos.instituicoes.push(name);
+                  infos.areas.push(name);
                   await fetch("/api/infosWebsite", {
                     method: "PUT",
                     headers: {

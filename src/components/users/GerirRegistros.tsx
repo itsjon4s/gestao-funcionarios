@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import type { Aluno } from "./User";
+import type { Aluno } from "@/types/users";
 interface PropsGerirRegistros {
   x: Aluno;
 }

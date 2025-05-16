@@ -1,7 +1,7 @@
 "use client";
 
 import Navbar from "@/components/Nabvbar";
-import User from "@/components/User";
+import User from "@/components/users/User";
 import { useEffect, useState } from "react";
 export default function Home() {
   const [alunos, setAlunos] = useState([]);

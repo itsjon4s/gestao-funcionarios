@@ -2,7 +2,7 @@
 import Navbar from "@/components/Nabvbar";
 import { useParams } from "next/navigation";
 import { useState, useEffect } from "react";
-import type { Aluno } from "@/components/User";
+import type { Aluno } from "@/types/users";
 
 export default function AvaliacaoEstagiario() {
   const [alunos, setAlunos] = useState<Aluno[]>([]);
@@ -33,44 +33,34 @@ export default function AvaliacaoEstagiario() {
               Avaliações de <strong>{aluno?.name}</strong>
             </h1>
           </div>
-          <div className="card-body">
-            <div className="flex flex-row flex-wrap">
-              {aluno?.avaliacoes?.length >= 1 ? (
-                aluno?.avaliacoes?.map((x, i) => {
-                  return (
-                    <div className="w-1/3 mb-2" key={i}>
-                      <div className="card bg-base-300 w-72 p-2 rounded-lg">
-                        <div className="card-title">
-                          Avaliação <strong>N{i + 1}</strong>
-                        </div>
-                        <div className="card-body">
-                          <span>
-                            Qualidade: <strong>{x.qualidade}</strong>/10
-                          </span>
-                          <span>
-                            Area: <strong>{x.area}</strong>
-                          </span>
-                          {x.comentario ? (
-                            <>
-                              <span>
-                                Comentario: <strong>{x.comentario}</strong>
-                              </span>
-                            </>
-                          ) : (
-                            ""
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })
-              ) : (
-                <div>
-                  <h1>Sem avaliações ainda.</h1>
-                </div>
-              )}
+          {aluno?.avaliacoes?.length >= 1 ? (
+            <div className="overflow-x-auto rounded-box border border-base-content/5 bg-base-100 mt-4">
+              <table className="table">
+                <thead>
+                  <th></th>
+                  <th>Area</th>
+                  <th>Comentario</th>
+                  <th>Qualidade</th>
+                </thead>
+                <tbody>
+                  {aluno?.avaliacoes?.map((x, i) => {
+                    return (
+                      <tr key={i} className="hover:bg-base-300">
+                        <th>{i}</th>
+                        <td>{x.area}</td>
+                        <td>{x.comentario || "Sem comentario"}</td>
+                        <td>{x.qualidade}</td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
             </div>
-          </div>
+          ) : (
+            <div>
+              <tr>Sem avaliações ainda.</tr>
+            </div>
+          )}
         </div>
       </div>
     </div>

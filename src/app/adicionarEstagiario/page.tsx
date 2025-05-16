@@ -4,19 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Navbar from "@/components/Nabvbar";
 import Link from "next/link";
-
-interface Mentor {
-  name: string;
-  email: string;
-  id: string;
-  alunosMentorados: string[];
-}
-
-interface Infos {
-  id: string;
-  niveisDeEducacao: string[];
-  instituicoes: string[];
-}
+import type { Mentor, Infos } from "@/types/users";
 
 export default function AdicionarEstagiario() {
   const [email, setEmail] = useState("");
@@ -31,6 +19,7 @@ export default function AdicionarEstagiario() {
     instituicoes: [],
     niveisDeEducacao: [],
     id: "",
+    areas: [],
   });
 
   const initialFetch = () => {

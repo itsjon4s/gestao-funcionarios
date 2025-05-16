@@ -2,19 +2,7 @@
 import { useState, useEffect } from "react";
 import Navbar from "@/components/Nabvbar";
 import { useRouter } from "next/navigation";
-
-interface Mentor {
-  name: string;
-  email: string;
-  id: string;
-  alunosMentorados: string[];
-}
-
-interface Infos {
-  id: string;
-  niveisDeEducacao: string[];
-  instituicoes: string[];
-}
+import type { Mentor, Infos } from "@/types/users";
 
 export default function Registro() {
   const [mentores, setMentores] = useState<Mentor[]>([]);
@@ -22,13 +10,12 @@ export default function Registro() {
     instituicoes: [],
     niveisDeEducacao: [],
     id: "",
+    areas: [],
   });
   const router = useRouter();
   const [user, setUser] = useState(null);
 
-
-
-  const initialFetch = () => {
+  const initialFetch = async () => {
     fetch("/api/mentores").then((x) => {
       x.json().then((d) => {
         setMentores(d);
@@ -42,7 +29,6 @@ export default function Registro() {
   };
 
   useEffect(() => {
-    initialFetch();
     fetch("/api/me")
       .then(async (res) => {
         if (!res.ok) {
@@ -55,13 +41,12 @@ export default function Registro() {
       .catch(() => {
         router.push("/");
       });
-
+    initialFetch();
   }, []);
 
   if (!user) {
     return <p>Carregando...</p>;
   }
-
   return (
     <div>
       <Navbar />
@@ -86,14 +71,14 @@ export default function Registro() {
             </div>
             <div>
               <a href="/adicionarMentor">
-                <button className="btn btn-primary text-white hover:btn-error text-lg">
+                <button className="btn btn-primary  hover:btn-error text-lg">
                   Adicionar Mentor
                 </button>
               </a>
             </div>
           </div>
         </div>
-        <div className="bg-base-300 p-5 rounded-lg flex justify-between text-white">
+        <div className="bg-base-300 p-5 rounded-lg flex justify-between ">
           <div>
             <h1 className="text-2xl font-bold">Instituições:</h1>
             <p>Instituições ja presentes:</p>
@@ -107,14 +92,14 @@ export default function Registro() {
           </div>
           <div>
             <a href="/adicionarInstituicao">
-              <button className="btn btn-primary text-white hover:btn-error text-lg">
+              <button className="btn btn-primary  hover:btn-error text-lg">
                 Adicionar Instituição
               </button>
             </a>
           </div>
         </div>
 
-        <div className="bg-base-300 p-5 rounded-lg flex justify-between text-white">
+        <div className="bg-base-300 p-5 rounded-lg flex justify-between ">
           <div>
             <h1 className="text-2xl font-bold">Níveis de educacao:</h1>
             <p>Níveis ja presentes:</p>
@@ -127,11 +112,32 @@ export default function Registro() {
             </ol>
           </div>
           <div>
-            {/* <a href="/adicionarInstituicao">
-              <button className="btn btn-primary text-white hover:btn-error text-lg">
+            <a href="/adicionarInstituicao">
+              <button className="btn btn-primary  hover:btn-error text-lg">
                 Adicionar nível de educacao
               </button>
-            </a> */}
+            </a>
+          </div>
+        </div>
+
+        <div className="bg-base-300 p-5 rounded-lg flex justify-between ">
+          <div>
+            <h1 className="text-2xl font-bold">Areas:</h1>
+            <p>Areas ja presentes:</p>
+            <ol className="ml-4 ">
+              {infos!.areas.length == 0 ? (
+                <strong>Sem areas adicionadas ainda.</strong>
+              ) : (
+                infos!.areas.map((x, i) => <li key={i}>{x}</li>)
+              )}
+            </ol>
+          </div>
+          <div>
+            <a href="/adicionarArea">
+              <button className="btn btn-primary  hover:btn-error text-lg">
+                Adicionar Area
+              </button>
+            </a>
           </div>
         </div>
       </div>

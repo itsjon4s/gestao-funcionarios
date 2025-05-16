@@ -2,7 +2,7 @@
 import Navbar from "@/components/Nabvbar";
 import { useParams } from "next/navigation";
 import { useState, useEffect } from "react";
-import type { Aluno } from "@/components/User";
+import type { Aluno } from "@/types/users";
 
 export default function RegistroEstagiario() {
   const [alunos, setAlunos] = useState<Aluno[]>([]);
@@ -33,8 +33,8 @@ export default function RegistroEstagiario() {
               Registros de <strong>{aluno?.name}</strong>
             </h1>
           </div>
-          <div className="card-body">
-            <div className="flex flex-row flex-wrap">
+          <div className="">
+            <div className="">
               {aluno?.registrosSobreOAluno?.length >= 1 ? (
                 aluno?.registrosSobreOAluno?.map((x, i) => {
                   return (
