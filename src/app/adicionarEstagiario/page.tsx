@@ -44,7 +44,7 @@ export default function AdicionarEstagiario() {
       <div className="flex justify-between space-x-2">
         <div className="hero bg-base-200">
           <div className="card p-4 text-center text-3xl">
-            {/* <h1>Adicionar um Estagiario</h1> */}
+            <h1>Adicionar um Estagiario</h1>
             <form className="card-body">
               <div className="form-control flex justify-center items-center space-x-3">
                 <label className="label">

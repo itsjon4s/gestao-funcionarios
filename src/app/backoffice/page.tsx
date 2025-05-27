@@ -45,7 +45,7 @@ export default function Registro() {
   }, []);
 
   if (!user) {
-    return <p>Carregando...</p>;
+    return <h1>Carregando...</h1>;
   }
   return (
     <div>

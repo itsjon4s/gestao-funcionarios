@@ -4,7 +4,6 @@ import { prisma } from "../../../lib/prisma";
 
 export async function GET() {
   const infos = await prisma!.infos.findFirst();
-  console.log(infos);
   return NextResponse.json(infos);
 }
 

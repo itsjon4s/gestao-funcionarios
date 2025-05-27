@@ -3,10 +3,10 @@
 import Navbar from "@/components/Nabvbar";
 import User from "@/components/users/User";
 import { useEffect, useState } from "react";
+
 export default function Home() {
   const [alunos, setAlunos] = useState([]);
   const [alterar, setAlterar] = useState(0);
-
   const fetchAlunos = () => {
     fetch("/api/alunos").then((x) => {
       x.json().then((d) => {

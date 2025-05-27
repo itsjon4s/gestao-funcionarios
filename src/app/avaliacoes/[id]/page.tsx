@@ -1,4 +1,5 @@
 "use client";
+
 import Navbar from "@/components/Nabvbar";
 import { useParams } from "next/navigation";
 import { useState, useEffect } from "react";
