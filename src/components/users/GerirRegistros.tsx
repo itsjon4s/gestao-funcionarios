@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import type { Aluno } from "./User";
+import type { Aluno } from "@/types/users";
 interface PropsGerirRegistros {
   x: Aluno;
 }
@@ -53,6 +53,7 @@ export default function GerirRegistros({ x }: PropsGerirRegistros) {
                 className="input input-bordered"
                 value={dia}
                 onChange={(x) => setDia(x.target.value)}
+                
               />
             </div>
             <div className="flex justify-between mt-4">

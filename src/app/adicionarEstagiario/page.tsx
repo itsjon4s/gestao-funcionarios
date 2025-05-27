@@ -1,17 +1,42 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Navbar from "@/components/Nabvbar";
+import Link from "next/link";
+import type { Mentor, Infos } from "@/types/users";
 
-export default function adicionarEstagiario() {
+export default function AdicionarEstagiario() {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
-  const [mentor, setMentor] = useState("");
-  const [instituicao, setInstituicao] = useState("");
-  const [nivelDeEducacao, setNivelDeEducacao] = useState(0);
-
+  const [MENTOR, setMentor] = useState("");
+  const [INSTITUICAO, setInstituicao] = useState("");
+  const [NIVELDEEDUCACAO, setNivelDeEducacao] = useState("");
   const router = useRouter();
+
+  const [mentores, setMentores] = useState<Mentor[]>([]);
+  const [infos, setInfos] = useState<Infos>({
+    instituicoes: [],
+    niveisDeEducacao: [],
+    id: "",
+    areas: [],
+  });
+
+  const initialFetch = () => {
+    fetch("/api/mentores").then((x) => {
+      x.json().then((d) => {
+        setMentores(d);
+      });
+    });
+    fetch("/api/infosWebsite").then((x) => {
+      x.json().then((d) => {
+        setInfos(d);
+      });
+    });
+  };
+  useEffect(() => {
+    initialFetch();
+  }, []);
 
   return (
     <div>
@@ -21,7 +46,7 @@ export default function adicionarEstagiario() {
           <div className="card p-4 text-center text-3xl">
             <h1>Adicionar um Estagiario</h1>
             <form className="card-body">
-              <div className="form-control">
+              <div className="form-control flex justify-center items-center space-x-3">
                 <label className="label">
                   <span className="label-text">Email</span>
                 </label>
@@ -32,9 +57,10 @@ export default function adicionarEstagiario() {
                   name="email"
                   value={email}
                   onChange={(x) => setEmail(x.target.value)}
+                  required
                 />
               </div>
-              <div className="form-control">
+              <div className="form-control flex justify-center items-center space-x-3">
                 <label className="label">
                   <span className="label-text">Nome</span>
                 </label>
@@ -44,61 +70,71 @@ export default function adicionarEstagiario() {
                   name="name"
                   value={name}
                   onChange={(x) => setName(x.target.value)}
+                  required
                 />
               </div>
-              <div className="form-control">
+              <div className="form-control flex justify-center items-center space-x-3">
                 <label className="label">
                   <span className="label-text">Mentor</span>
                 </label>
-                <input
-                  placeholder="Qual o mentor dele(a)?"
-                  className="input input-bordered"
-                  name="mentor"
-                  value={mentor}
-                  onChange={(x) => setMentor(x.target.value)}
-                />
+                <select
+                  className="select"
+                  required
+                  onChange={(x) => {
+                    return setMentor(x.target.value);
+                  }}
+                >
+                  <option disabled selected>
+                    Qual o mentor dele(a)
+                  </option>
+                  {mentores.map((x, i) => (
+                    <option key={i}>{x.name}</option>
+                  ))}
+                </select>
               </div>
-              <div className="form-control">
+              <div className="form-control flex justify-center items-center space-x-3">
                 <label className="label">
                   <span className="label-text">Instituicao</span>
                 </label>
-                <input
-                  placeholder="Qual a instituicao de ensino?"
-                  className="input input-bordered"
-                  name="instituicao"
-                  value={instituicao}
-                  onChange={(x) => setInstituicao(x.target.value)}
-                />
+                <select
+                  className="select"
+                  required
+                  onChange={(x) => {
+                    return setInstituicao(x.target.value);
+                  }}
+                >
+                  <option disabled selected>
+                    Qual a instituicao de ensino?
+                  </option>
+                  {infos.instituicoes.map((x, i) => (
+                    <option key={i}>{x}</option>
+                  ))}
+                </select>
               </div>
-              <div className="form-control">
+              <div className="form-control flex justify-center items-center space-x-3">
                 <label className="label">
                   <span className="label-text">Nivel de Educacacao</span>
                 </label>
-                <input
-                  type="number"
-                  placeholder="Qual o nivel de ensino?"
-                  className="input input-bordered"
-                  name="nivelDeEducacao"
-                  value={nivelDeEducacao}
-                  onChange={(x) => setNivelDeEducacao(parseInt(x.target.value))}
-                />
+                <select
+                  className="select"
+                  required
+                  onChange={(x) => {
+                    return setNivelDeEducacao(x.target.value);
+                  }}
+                >
+                  <option disabled selected>
+                    Qual o nivel de ensino?
+                  </option>
+                  {infos.niveisDeEducacao.map((x, i) => (
+                    <option key={i}>{x}</option>
+                  ))}
+                </select>
               </div>
             </form>
-            <div className="flex justify-between">
-              <button
-                className="btn btn-error"
-                onClick={() => {
-                  setName("");
-                  setMentor("");
-                  setEmail("");
-                  setInstituicao("");
-                  setNivelDeEducacao(0);
-                }}
-              >
-                Limpar Formulario
-              </button>
+            <div className="flex justify-center items-center">
               <button
                 className="btn btn-success"
+                type="submit"
                 onClick={async () => {
                   await fetch("/api/alunos", {
                     method: "POST",
@@ -107,10 +143,10 @@ export default function adicionarEstagiario() {
                     },
                     body: JSON.stringify({
                       name,
-                      mentor,
+                      mentor: MENTOR,
                       email,
-                      instituicao,
-                      nivelDeEducacao,
+                      instituicao: INSTITUICAO,
+                      nivelDeEducacao: NIVELDEEDUCACAO,
                       avaliacoes: [],
                       registrosSobreOAluno: [],
                     }),
@@ -123,9 +159,9 @@ export default function adicionarEstagiario() {
             </div>
           </div>
         </div>
-        <a href="/">
+        <Link href="/">
           <button className="btn">Votlar a pagina inicial</button>
-        </a>
+        </Link>
       </div>
     </div>
   );

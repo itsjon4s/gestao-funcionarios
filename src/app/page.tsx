@@ -1,12 +1,12 @@
 "use client";
 
 import Navbar from "@/components/Nabvbar";
-import User from "@/components/User";
+import User from "@/components/users/User";
 import { useEffect, useState } from "react";
+
 export default function Home() {
   const [alunos, setAlunos] = useState([]);
   const [alterar, setAlterar] = useState(0);
-
   const fetchAlunos = () => {
     fetch("/api/alunos").then((x) => {
       x.json().then((d) => {
@@ -21,7 +21,7 @@ export default function Home() {
   return (
     <div>
       <Navbar />
-      <div className="  space-y-4">
+      <div className="space-y-4">
         <div className="flex justify-between">
           <h1 className="text-3xl">
             Painel de Controle - <strong>Estagiarios</strong>

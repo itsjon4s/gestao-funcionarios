@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import type { Aluno } from "@/components/User";
+import { useState, useEffect } from "react";
+import type { Aluno, Infos } from "@/types/users";
 
 interface AvaliarUsuarioProps {
   aluno: Aluno;
@@ -13,6 +13,23 @@ export default function AvaliarUsuario({ aluno }: AvaliarUsuarioProps) {
   const [comentario, setComentario] = useState("");
   const [menuAdicionar, setMenuAdicionar] = useState(false);
   const [visibilidade, setVisibilidade] = useState(true);
+    const [infos, setInfos] = useState<Infos>({
+      instituicoes: [],
+      niveisDeEducacao: [],
+      id: "",
+      areas: [],
+    });
+  
+    const initialFetch = () => {
+      fetch("/api/infosWebsite").then((x) => {
+        x.json().then((d) => {
+          setInfos(d);
+        });
+      });
+    };
+    useEffect(() => {
+      initialFetch();
+    }, []);
 
   return (
     <div className="card bg-base-300 w-96 p-6 mr-12 mb-2">
@@ -34,7 +51,7 @@ export default function AvaliarUsuario({ aluno }: AvaliarUsuarioProps) {
             className={`btn ${visibilidade ? "" : "hidden"}`}
             onClick={() => {
               setMenuAdicionar(true);
-              setVisibilidade(false)
+              setVisibilidade(false);
             }}
           >
             Adicionar Avaliacao
@@ -55,7 +72,7 @@ export default function AvaliarUsuario({ aluno }: AvaliarUsuarioProps) {
                 className="input input-bordered"
                 name="qualidade"
                 value={qualTrab}
-                onChange={(aluno) => setQualTrab(parseInt(aluno.target.value))}
+                onChange={(aluno) => setQualTrab(Number(aluno.target.value))}
                 max={10}
                 min={0}
               />
@@ -88,10 +105,9 @@ export default function AvaliarUsuario({ aluno }: AvaliarUsuarioProps) {
                 <option disabled selected>
                   Escolha a area
                 </option>
-                <option>Front-End</option>
-                <option>Back-End</option>
-                <option>Banco de Dados</option>
-                <option>Design Grafico</option>
+                {infos!.areas.map((x, i) => (
+                  <option key={i}>{x}</option>
+                ))}
               </select>
             </div>
             <div className="flex justify-between mt-2">
@@ -99,7 +115,7 @@ export default function AvaliarUsuario({ aluno }: AvaliarUsuarioProps) {
                 className="btn btn-error"
                 onClick={() => {
                   setMenuAdicionar(false);
-                  setVisibilidade(true)
+                  setVisibilidade(true);
                 }}
               >
                 Cancelar
@@ -129,7 +145,7 @@ export default function AvaliarUsuario({ aluno }: AvaliarUsuarioProps) {
                     }),
                   });
                   setMenuAdicionar(false);
-                  setVisibilidade(true)
+                  setVisibilidade(true);
                 }}
               >
                 Submenter
