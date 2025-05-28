@@ -1,226 +1,125 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import type { Aluno, Mentor, Infos } from "@/types/users";
+import type { Aluno } from "@/types/users";
 
-interface UserProps {
-  aluno: Aluno;
-  func: any;
-}
-
-export default function User(props: UserProps) {
-  const [editando, setEditando] = useState(false);
-  const [email, setEmail] = useState(props.aluno.email);
-  const [name, setName] = useState(props.aluno.name);
-  const [mentor, setMentor] = useState(props.aluno.mentor);
-  const [instituicao, setInstituicao] = useState(props.aluno.instituicao);
-  const [nivelDeEducacao, setNivelDeEducacao] = useState(
-    props.aluno.nivelDeEducacao
-  );
-
-  const [mentores, setMentores] = useState<Mentor[]>([]);
-  const [infos, setInfos] = useState<Infos>({
-    instituicoes: [],
-    niveisDeEducacao: [],
-    id: "",
-    areas: [],
-  });
-
-  const initialFetch = () => {
-    fetch("/api/mentores").then((x) => {
+export default function User() {
+  const [alterar, setAlterar] = useState<number>(0);
+  const [alunos, setAlunos] = useState<Aluno[]>([]);
+  const fetchAlunos = () => {
+    fetch("/api/alunos").then((x) => {
       x.json().then((d) => {
-        setMentores(d);
-      });
-    });
-    fetch("/api/infosWebsite").then((x) => {
-      x.json().then((d) => {
-        setInfos(d);
+        setAlunos(d);
       });
     });
   };
   useEffect(() => {
-    initialFetch();
-  }, []);
+    fetchAlunos();
+  }, [alterar]);
 
-  async function deleteUser() {
+  async function deleteUser(id: string) {
     await fetch("/api/alunos", {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ id: props.aluno.id }),
+      body: JSON.stringify({ id: id }),
     });
+    setAlterar(alterar + 1);
   }
 
   return (
-    <div className="card bg-base-300 w-96 p-6 mr-12 mb-2">
-      <p className="card-title">
-        Estagiario - <strong>{props.aluno?.name}</strong>
-      </p>
-      <div className="card-body">
-        {editando ? (
-          <>
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text">Email</span>
-              </label>
-              <input
-                type="email"
-                placeholder="Qual o email dele(a)?"
-                className="input input-bordered"
-                name="email"
-                value={email}
-                onChange={(x) => setEmail(x.target.value)}
-                required
-              />
-            </div>
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text">Nome</span>
-              </label>
-              <input
-                placeholder="Qual o nome do estagiario(a)?"
-                className="input input-bordered"
-                name="name"
-                value={name}
-                onChange={(x) => setName(x.target.value)}
-                required
-              />
-            </div>
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text">Mentor</span>
-              </label>
-              <select
-                className="select"
-                required
-                onChange={(x) => {
-                  return setMentor(x.target.value);
-                }}
-              >
-                <option disabled selected>
-                  Qual o mentor dele(a)
-                </option>
-                {mentores.map((x, i) => (
-                  <option key={i}>{x.name}</option>
-                ))}
-              </select>
-            </div>
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text">Instituicao</span>
-              </label>
-              <select
-                className="select"
-                required
-                onChange={(x) => {
-                  return setInstituicao(x.target.value);
-                }}
-              >
-                <option disabled selected>
-                  Qual a instituicao de ensino?
-                </option>
-                {infos.instituicoes.map((x, i) => (
-                  <option key={i}>{x}</option>
-                ))}
-              </select>
-            </div>
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text">Nivel de Educacacao</span>
-              </label>
-              <select
-                className="select"
-                required
-                onChange={(x) => setNivelDeEducacao(x.target.value)}
-              >
-                <option disabled selected>
-                  Qual o nivel de ensino?
-                </option>
-                {infos.niveisDeEducacao.map((x, i) => (
-                  <option key={i}>{x}</option>
-                ))}
-              </select>
-            </div>
-            <div className="flex justify-between pt-2">
-              <button
-                className="btn btn-error"
-                onClick={() => {
-                  setEditando(false);
-                  setEmail(props.aluno.email);
-                  setName(props.aluno.name);
-                  setMentor(props.aluno.mentor);
-                  setInstituicao(props.aluno.instituicao);
-                  setNivelDeEducacao(props.aluno.nivelDeEducacao);
-                }}
-              >
-                Cancelar Edicao
-              </button>
-              <button
-                onClick={async () => {
-                  await fetch("/api/alunos", {
-                    method: "PUT",
-                    headers: {
-                      "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                      id: props.aluno.id,
-                      name,
-                      mentor: mentor,
-                      email,
-                      instituicao: instituicao,
-                      nivelDeEducacao: nivelDeEducacao,
-                      avaliacoes: props.aluno.avaliacoes,
-                      registrosSobreOAluno: props.aluno.registrosSobreOAluno,
-                    }),
-                  });
-                  setEditando(false);
-                  props.func(Date.now());
-                }}
-                className="btn btn-success"
-                type="submit"
-              >
-                Guardar
-              </button>
-            </div>
-          </>
-        ) : (
-          <>
-            <span>
-              Email: <strong>{props.aluno?.email}</strong>
-            </span>
-            <span>
-              Mentor: <strong>{props.aluno?.mentor}</strong>
-            </span>
-            <span>
-              Instituicao: <strong>{props.aluno?.instituicao}</strong>
-            </span>
-            <span>
-              Nivel de Educacacao:{" "}
-              <strong>{props.aluno?.nivelDeEducacao}</strong>
-            </span>
-            <div className="card-actions flex justify-between">
-              <button
-                className="btn btn-success"
-                onClick={async () => {
-                  setEditando(true);
-                }}
-              >
-                Editar
-              </button>
-              <button
-                className="btn btn-error"
-                onClick={async () => {
-                  deleteUser();
-                  props.func(Date.now());
-                }}
-              >
-                Eliminar
-              </button>
-            </div>
-          </>
-        )}
-      </div>
+    <div className="overflow-x-auto rounded-box border border-base-content/5 bg-base-100 mt-4">
+      <table className="table">
+        <thead>
+          <th></th>
+          <th>Email</th>
+          <th>Nome</th>
+          <th>Mentor</th>
+          <th>Insituicao</th>
+          <th>Nivel de Educacao</th>
+          <th></th>
+          <th></th>
+          <th></th>
+        </thead>
+        <tbody>
+          {alunos.map((x, i) => {
+            return (
+              <tr key={i} className="hover:bg-base-300">
+                <td>{i + 1}</td>
+                <td>{x.email}</td>
+                <td>{x.name}</td>
+                <td>{x.mentor}</td>
+                <td>{x.instituicao}</td>
+                <td>{x.nivelDeEducacao}</td>
+                <td>
+                  <a href={`/editar/${x.id}`}>
+                    <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="text-base-content"
+                      aria-hidden="true"
+                    >
+                      <path d="M12 20h9" />
+                      <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19.5 3 21l1.5-4L16.5 3.5z" />
+                    </svg>
+                  </a>
+                </td>
+                <td>
+                  <button onClick={() => deleteUser(x.id)}>
+                    <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="text-base-content"
+                      aria-hidden="true"
+                    >
+                      <polyline points="3 6 5 6 21 6" />
+                      <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2" />
+                      <line x1="10" y1="11" x2="10" y2="17" />
+                      <line x1="14" y1="11" x2="14" y2="17" />
+                    </svg>
+                  </button>
+                </td>
+                <td>
+                  <a
+                    href={`/avaliacoes/adicionar/${x.id}`}
+                    className="flex items-center justify-center"
+                  >
+                    <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="text-base-content"
+                      aria-hidden="true"
+                    >
+                      <circle cx="12" cy="12" r="10" />
+                      <line x1="12" y1="8" x2="12" y2="16" />
+                      <line x1="8" y1="12" x2="16" y2="12" />
+                    </svg>
+                  </a>
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
     </div>
   );
 }

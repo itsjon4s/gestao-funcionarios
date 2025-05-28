@@ -7,19 +7,23 @@ import type { Aluno, Infos } from "@/types/users";
 
 export default function Home() {
   const [alunos, setAlunos] = useState<Aluno[]>([]);
-  const fetchAlunos = async () => {
-    fetch("/api/alunos").then((x) => {
-      x.json().then((d) => {
-        setAlunos(d);
-      });
-    });
-  };
   const [infos, setInfos] = useState<Infos>({
     instituicoes: [],
     niveisDeEducacao: [],
     id: "",
     areas: [],
   });
+  const [loading, setLoading] = useState(true);
+
+  const fetchAlunos = async () => {
+    fetch("/api/alunos")
+      .then((x) => x.json())
+      .then((d) => {
+        setAlunos(d);
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
+  };
 
   const initialFetch = () => {
     fetch("/api/infosWebsite").then((x) => {
@@ -30,10 +34,11 @@ export default function Home() {
   };
 
   useEffect(() => {
+    setLoading(true);
     fetchAlunos();
     initialFetch();
-    //@ts-ignore
   }, []);
+
   function d(data: any, type: string) {
     return {
       name: data?.name,
@@ -54,6 +59,18 @@ export default function Home() {
             .reduce((acc: number, c: number) => acc + c, 0)
         : 0,
     };
+  }
+
+  if (loading) {
+    return (
+      <div>
+        <h1></h1>
+        <Navbar />
+        <div className="flex justify-center items-center h-96">
+          <span className="loading loading-spinner loading-lg"></span>
+        </div>
+      </div>
+    );
   }
 
   return (

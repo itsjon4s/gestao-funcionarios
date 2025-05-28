@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import Navbar from "@/components/Nabvbar";
 import { useRouter } from "next/navigation";
-import type { Mentor, Infos } from "@/types/users";
+import type { Mentor, Infos, Aluno } from "@/types/users";
 
 export default function Registro() {
   const [mentores, setMentores] = useState<Mentor[]>([]);
@@ -14,6 +14,8 @@ export default function Registro() {
   });
   const router = useRouter();
   const [user, setUser] = useState(null);
+  const [alunos, setAlunos] = useState<Aluno[]>([]);
+  const [loading, setLoading] = useState(true);
 
   const initialFetch = async () => {
     fetch("/api/mentores").then((x) => {
@@ -26,6 +28,13 @@ export default function Registro() {
         setInfos(d);
       });
     });
+    fetch("/api/alunos")
+      .then((res) => res.json())
+      .then((data) => {
+        setAlunos(data);
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
   };
 
   useEffect(() => {
@@ -47,6 +56,17 @@ export default function Registro() {
   if (!user) {
     return <h1>Carregando...</h1>;
   }
+  if (loading) {
+    return (
+      <div>
+        <Navbar />
+        <div className="flex justify-center items-center h-96">
+          <span className="loading loading-spinner loading-lg"></span>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div>
       <Navbar />
@@ -139,6 +159,32 @@ export default function Registro() {
               </button>
             </a>
           </div>
+        </div>
+        <div className="overflow-x-auto rounded-box border border-base-content/5 bg-base-100 mt-4">
+          <table className="table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Email</th>
+                <th>Nome</th>
+                <th>Mentor</th>
+                <th>Instituição</th>
+                <th>Nível de Educação</th>
+              </tr>
+            </thead>
+            <tbody>
+              {alunos.map((x, i) => (
+                <tr key={i} className="hover:bg-base-300">
+                  <td>{i + 1}</td>
+                  <td>{x.email}</td>
+                  <td>{x.name}</td>
+                  <td>{x.mentor}</td>
+                  <td>{x.instituicao}</td>
+                  <td>{x.nivelDeEducacao}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
     </div>

@@ -8,18 +8,34 @@ import type { Aluno } from "@/types/users";
 export default function Avaliacoes() {
   const [alunos, setAlunos] = useState<Aluno[]>([]);
   const [alterar, setAlterar] = useState(0);
+  const [loading, setLoading] = useState(true);
 
   const fetchAlunos = () => {
-    fetch("/api/alunos").then((x) => {
-      x.json().then((d) => {
+    fetch("/api/alunos")
+      .then((x) => x.json())
+      .then((d) => {
         setAlunos(d);
-      });
-    });
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
   };
 
   useEffect(() => {
+    setLoading(true);
     fetchAlunos();
   }, [alterar]);
+
+  if (loading) {
+    return (
+      <div>
+        <h1></h1>
+        <Navbar />
+        <div className="flex justify-center items-center h-96">
+          <span className="loading loading-spinner loading-lg"></span>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div>

@@ -5,18 +5,22 @@ import User from "@/components/users/User";
 import { useEffect, useState } from "react";
 
 export default function Home() {
-  const [alunos, setAlunos] = useState([]);
-  const [alterar, setAlterar] = useState(0);
-  const fetchAlunos = () => {
-    fetch("/api/alunos").then((x) => {
-      x.json().then((d) => {
-        setAlunos(d);
-      });
-    });
-  };
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
-    fetchAlunos();
-  }, [alterar]);
+    setLoading(false);
+  }, []);
+
+  if (loading) {
+    return (
+      <div>
+        <Navbar />
+        <div className="flex justify-center items-center h-96">
+          <span className="loading loading-spinner loading-lg"></span>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -34,11 +38,7 @@ export default function Home() {
         </div>
         <div className="flex">
           <div className="flex flex-col text-center space-x-4">
-            <div className="flex flex-row flex-wrap">
-              {alunos.map((x, index) => {
-                return <User aluno={x} key={index} func={setAlterar} />;
-              })}
-            </div>
+            <User />
           </div>
         </div>
       </div>
