@@ -13,55 +13,71 @@ export default function AvaliarUsuario({ aluno }: AvaliarUsuarioProps) {
   const [comentario, setComentario] = useState("");
   const [menuAdicionar, setMenuAdicionar] = useState(false);
   const [visibilidade, setVisibilidade] = useState(true);
-    const [infos, setInfos] = useState<Infos>({
-      instituicoes: [],
-      niveisDeEducacao: [],
-      id: "",
-      areas: [],
-    });
-  
-    const initialFetch = () => {
-      fetch("/api/infosWebsite").then((x) => {
-        x.json().then((d) => {
-          setInfos(d);
-        });
-      });
-    };
-    useEffect(() => {
-      initialFetch();
-    }, []);
+  const [infos, setInfos] = useState<Infos>({
+    instituicoes: [],
+    niveisDeEducacao: [],
+    id: "",
+    areas: [],
+  });
+
+  useEffect(() => {
+    fetch("/api/infosWebsite")
+      .then((x) => x.json())
+      .then((d) => setInfos(d));
+  }, []);
 
   return (
-    <div className="card bg-base-300 w-96 p-6 mr-12 mb-2">
-      <div className="card-title">
-        <h1 className="text-xl">
-          Avaliacoes - <strong>{aluno.name}</strong>
+    <div className="card bg-base-100/80 border border-base-300/40 shadow-xl rounded-2xl w-96 p-6 m-4 backdrop-blur-md transition hover:scale-[1.025]">
+      <div className="card-title flex flex-col items-center mb-2">
+        <span className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-2">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+            <circle
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              strokeWidth="2"
+              className="text-primary/40"
+            />
+            <circle
+              cx="12"
+              cy="12"
+              r="5"
+              fill="currentColor"
+              className="text-primary/60"
+            />
+          </svg>
+        </span>
+        <h1 className="text-xl font-semibold text-base-content text-center">
+          Avaliações - <span className="text-primary">{aluno.name}</span>
         </h1>
       </div>
-      <div className="card-body">
-        <div className="flex justify-between space-x-2">
+      <div className="card-body p-0">
+        <div className="flex justify-between space-x-2 mb-4">
           <a href={`/avaliacoes/${aluno.id}`}>
             <button
-              className={`btn btn-primary ${visibilidade ? "" : "hidden"}`}
+              className={`btn btn-primary btn-sm ${
+                visibilidade ? "" : "hidden"
+              }`}
             >
               Ver Avaliações
             </button>
           </a>
           <button
-            className={`btn ${visibilidade ? "" : "hidden"}`}
+            className={`btn btn-outline btn-sm ${visibilidade ? "" : "hidden"}`}
             onClick={() => {
               setMenuAdicionar(true);
               setVisibilidade(false);
             }}
           >
-            Adicionar Avaliacao
+            Adicionar Avaliação
           </button>
         </div>
-        {menuAdicionar ? (
-          <>
-            <h1 className="text-xl font-semibold pt-2">
-              Adicionar uma nova Avaliacao
-            </h1>
+        {menuAdicionar && (
+          <div className="space-y-3">
+            <h2 className="text-lg font-semibold pt-2 text-base-content">
+              Adicionar uma nova Avaliação
+            </h2>
             <div className="form-control">
               <label className="label">
                 <span className="label-text">Qualidade (0 - 10)</span>
@@ -72,47 +88,47 @@ export default function AvaliarUsuario({ aluno }: AvaliarUsuarioProps) {
                 className="input input-bordered"
                 name="qualidade"
                 value={qualTrab}
-                onChange={(aluno) => setQualTrab(Number(aluno.target.value))}
+                onChange={(e) => setQualTrab(Number(e.target.value))}
                 max={10}
                 min={0}
               />
             </div>
             <div className="form-control">
               <label className="label">
-                <span className="label-text">Comentario</span>
+                <span className="label-text">Comentário</span>
               </label>
               <input
                 type="text"
-                placeholder="Deseja adicionar algum comentario?"
+                placeholder="Deseja adicionar algum comentário?"
                 className="input input-bordered"
                 name="comentario"
                 value={comentario}
-                onChange={(x) => setComentario(x.target.value)}
-                max={10}
-                min={0}
+                onChange={(e) => setComentario(e.target.value)}
+                maxLength={200}
               />
             </div>
             <div className="form-control w-full max-w-x">
-              <div className="label">
+              <label className="label">
                 <span className="label-text">
-                  Qual a area em que foi realizada?
+                  Qual a área em que foi realizada?
                 </span>
-              </div>
+              </label>
               <select
                 className="select select-bordered"
-                onChange={(aluno) => setArea(aluno.target.value)}
+                value={area}
+                onChange={(e) => setArea(e.target.value)}
               >
-                <option disabled selected>
-                  Escolha a area
+                <option value="" disabled>
+                  Escolha a área
                 </option>
-                {infos!.areas.map((x, i) => (
+                {infos.areas.map((x, i) => (
                   <option key={i}>{x}</option>
                 ))}
               </select>
             </div>
-            <div className="flex justify-between mt-2">
+            <div className="flex justify-between mt-4">
               <button
-                className="btn btn-error"
+                className="btn btn-error btn-sm"
                 onClick={() => {
                   setMenuAdicionar(false);
                   setVisibilidade(true);
@@ -121,7 +137,7 @@ export default function AvaliarUsuario({ aluno }: AvaliarUsuarioProps) {
                 Cancelar
               </button>
               <button
-                className="btn btn-success"
+                className="btn btn-success btn-sm"
                 onClick={async () => {
                   aluno.avaliacoes.push({
                     qualidade: qualTrab,
@@ -137,7 +153,7 @@ export default function AvaliarUsuario({ aluno }: AvaliarUsuarioProps) {
                       id: aluno.id,
                       name: aluno.name,
                       mentor: aluno.mentor,
-                      aluno: aluno.email,
+                      email: aluno.email,
                       instituicao: aluno.instituicao,
                       nivelDeEducacao: aluno.nivelDeEducacao,
                       avaliacoes: aluno.avaliacoes,
@@ -148,12 +164,10 @@ export default function AvaliarUsuario({ aluno }: AvaliarUsuarioProps) {
                   setVisibilidade(true);
                 }}
               >
-                Submenter
+                Submeter
               </button>
             </div>
-          </>
-        ) : (
-          ""
+          </div>
         )}
       </div>
     </div>

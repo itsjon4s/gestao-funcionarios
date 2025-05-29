@@ -88,7 +88,7 @@ export default function AdicionarAvaliacao() {
 
   if (loading) {
     return (
-      <div>
+      <div className="min-h-screen bg-gradient-to-b from-base-200 via-base-100 to-base-300">
         <Navbar />
         <div className="flex justify-center items-center h-96">
           <span className="loading loading-spinner loading-lg"></span>
@@ -99,7 +99,7 @@ export default function AdicionarAvaliacao() {
 
   if (error) {
     return (
-      <div>
+      <div className="min-h-screen bg-gradient-to-b from-base-200 via-base-100 to-base-300">
         <Navbar />
         <div className="flex justify-center items-center h-96">
           <span className="text-error">{error}</span>
@@ -109,10 +109,14 @@ export default function AdicionarAvaliacao() {
   }
 
   return (
-    <div>
+    <div className="min-h-screen text-base-content relative">
       <Navbar />
-      <div className="flex justify-center mt-8">
-        <div className="hero bg-base-200 w-full max-w-2xl rounded-xl shadow-lg">
+      <div className="absolute left-1/2 top-0 -translate-x-1/2 z-0 w-[700px] h-[350px] pointer-events-none">
+        <div className="w-full h-full rounded-full bg-primary blur-3xl opacity-20"></div>
+        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[200px] rounded-full bg-primary blur-2xl opacity-30"></div>
+      </div>
+      <div className="relative z-10 flex justify-center pt-20 pb-10">
+        <div className="hero bg-base-100/80 w-full max-w-2xl rounded-2xl shadow-2xl border border-base-300/40 backdrop-blur-md">
           <div className="card p-8 w-full">
             <h2 className="text-2xl font-bold mb-6 text-center">
               Adicionar Avaliação para{" "}
@@ -179,7 +183,6 @@ export default function AdicionarAvaliacao() {
                   type="submit"
                   className="btn btn-primary"
                   disabled={loading}
-                  onClick={() => router.push(`/avaliacoes/${id}`)}
                 >
                   Adicionar Avaliação
                 </button>

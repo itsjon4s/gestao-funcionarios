@@ -51,15 +51,22 @@ export default function Registro() {
         router.push("/");
       });
     initialFetch();
-  }, []);
+  }, [router]);
 
   if (!user) {
-    return <h1>Carregando...</h1>;
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-base-200 via-base-100 to-base-300 flex items-center justify-center">
+        <Navbar />
+        <h1></h1>
+        <span className="loading loading-spinner loading-lg"></span>
+      </div>
+    );
   }
   if (loading) {
     return (
-      <div>
+      <div className="min-h-screen bg-gradient-to-b from-base-200 via-base-100 to-base-300">
         <Navbar />
+        <h1></h1>
         <div className="flex justify-center items-center h-96">
           <span className="loading loading-spinner loading-lg"></span>
         </div>
@@ -68,123 +75,90 @@ export default function Registro() {
   }
 
   return (
-    <div>
+    <div className="min-h-screen text-base-content relative">
       <Navbar />
-      <div className="space-y-4">
-        <div className="flex justify-between">
-          <h1 className="text-3xl">
-            <strong>Painel Administrativo</strong>
-          </h1>
-        </div>
+      <h1></h1>
+      <div className="absolute left-1/2 top-0 -translate-x-1/2 z-0 w-[700px] h-[350px] pointer-events-none">
+        <div className="w-full h-full rounded-full bg-primary blur-3xl opacity-20"></div>
+        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[200px] rounded-full bg-primary blur-2xl opacity-30"></div>
+      </div>
+      <div className="relative z-10 space-y-8 pt-20 pb-10 max-w-5xl mx-auto">
+        <h1 className="text-4xl md:text-5xl font-bold text-center drop-shadow-lg mb-8">
+          <span className="text-primary">Painel Administrativo</span>
+        </h1>
         <div className="flex flex-col space-y-5">
-          <div className="bg-base-300 p-5 rounded-lg flex justify-between">
+          <div className="bg-base-100/80 p-5 rounded-2xl shadow border border-base-300/40 flex justify-between items-center">
             <div>
               <h1 className="text-2xl font-bold">Mentores:</h1>
-              <p>Mentores disponiveis:</p>
-              <ol className="ml-4 ">
-                {mentores.length == 0 ? (
+              <p>Mentores disponíveis:</p>
+              <ol className="ml-4">
+                {mentores.length === 0 ? (
                   <strong>Sem mentores adicionados ainda.</strong>
                 ) : (
                   mentores.map((x, i) => <li key={i}>{x.name}</li>)
                 )}
               </ol>
             </div>
+            <a href="/adicionarMentor">
+              <button className="btn btn-primary hover:btn-error text-lg">
+                Adicionar Mentor
+              </button>
+            </a>
+          </div>
+          <div className="bg-base-100/80 p-5 rounded-2xl shadow border border-base-300/40 flex justify-between items-center">
             <div>
-              <a href="/adicionarMentor">
-                <button className="btn btn-primary  hover:btn-error text-lg">
-                  Adicionar Mentor
-                </button>
-              </a>
+              <h1 className="text-2xl font-bold">Instituições:</h1>
+              <p>Instituições já presentes:</p>
+              <ol className="ml-4">
+                {infos.instituicoes.length === 0 ? (
+                  <strong>Sem instituições adicionadas ainda.</strong>
+                ) : (
+                  infos.instituicoes.map((x, i) => <li key={i}>{x}</li>)
+                )}
+              </ol>
             </div>
-          </div>
-        </div>
-        <div className="bg-base-300 p-5 rounded-lg flex justify-between ">
-          <div>
-            <h1 className="text-2xl font-bold">Instituições:</h1>
-            <p>Instituições ja presentes:</p>
-            <ol className="ml-4 ">
-              {infos!.instituicoes.length == 0 ? (
-                <strong>Sem instituições adicionadas ainda.</strong>
-              ) : (
-                infos!.instituicoes.map((x, i) => <li key={i}>{x}</li>)
-              )}
-            </ol>
-          </div>
-          <div>
             <a href="/adicionarInstituicao">
-              <button className="btn btn-primary  hover:btn-error text-lg">
+              <button className="btn btn-primary hover:btn-error text-lg">
                 Adicionar Instituição
               </button>
             </a>
           </div>
-        </div>
-
-        <div className="bg-base-300 p-5 rounded-lg flex justify-between ">
-          <div>
-            <h1 className="text-2xl font-bold">Níveis de educacao:</h1>
-            <p>Níveis ja presentes:</p>
-            <ol className="ml-4 ">
-              {infos!.niveisDeEducacao.length == 0 ? (
-                <strong>Sem níveis de educacao adicionadas ainda.</strong>
-              ) : (
-                infos!.niveisDeEducacao.map((x, i) => <li key={i}>{x}</li>)
-              )}
-            </ol>
-          </div>
-          <div>
+          <div className="bg-base-100/80 p-5 rounded-2xl shadow border border-base-300/40 flex justify-between items-center">
+            <div>
+              <h1 className="text-2xl font-bold">Níveis de Educação:</h1>
+              <p>Níveis já presentes:</p>
+              <ol className="ml-4">
+                {infos.niveisDeEducacao.length === 0 ? (
+                  <strong>Sem níveis de educação adicionados ainda.</strong>
+                ) : (
+                  infos.niveisDeEducacao.map((x, i) => <li key={i}>{x}</li>)
+                )}
+              </ol>
+            </div>
             <a href="/adicionarInstituicao">
-              <button className="btn btn-primary  hover:btn-error text-lg">
-                Adicionar nível de educacao
+              <button className="btn btn-primary hover:btn-error text-lg">
+                Adicionar nível de educação
               </button>
             </a>
           </div>
-        </div>
-
-        <div className="bg-base-300 p-5 rounded-lg flex justify-between ">
-          <div>
-            <h1 className="text-2xl font-bold">Areas:</h1>
-            <p>Areas ja presentes:</p>
-            <ol className="ml-4 ">
-              {infos!.areas.length == 0 ? (
-                <strong>Sem areas adicionadas ainda.</strong>
-              ) : (
-                infos!.areas.map((x, i) => <li key={i}>{x}</li>)
-              )}
-            </ol>
-          </div>
-          <div>
+          <div className="bg-base-100/80 p-5 rounded-2xl shadow border border-base-300/40 flex justify-between items-center">
+            <div>
+              <h1 className="text-2xl font-bold">Áreas:</h1>
+              <p>Áreas já presentes:</p>
+              <ol className="ml-4">
+                {infos.areas.length === 0 ? (
+                  <strong>Sem áreas adicionadas ainda.</strong>
+                ) : (
+                  infos.areas.map((x, i) => <li key={i}>{x}</li>)
+                )}
+              </ol>
+            </div>
             <a href="/adicionarArea">
-              <button className="btn btn-primary  hover:btn-error text-lg">
-                Adicionar Area
+              <button className="btn btn-primary hover:btn-error text-lg">
+                Adicionar Área
               </button>
             </a>
           </div>
-        </div>
-        <div className="overflow-x-auto rounded-box border border-base-content/5 bg-base-100 mt-4">
-          <table className="table">
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Email</th>
-                <th>Nome</th>
-                <th>Mentor</th>
-                <th>Instituição</th>
-                <th>Nível de Educação</th>
-              </tr>
-            </thead>
-            <tbody>
-              {alunos.map((x, i) => (
-                <tr key={i} className="hover:bg-base-300">
-                  <td>{i + 1}</td>
-                  <td>{x.email}</td>
-                  <td>{x.name}</td>
-                  <td>{x.mentor}</td>
-                  <td>{x.instituicao}</td>
-                  <td>{x.nivelDeEducacao}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
         </div>
       </div>
     </div>

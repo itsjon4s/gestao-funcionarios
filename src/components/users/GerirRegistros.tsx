@@ -14,11 +14,41 @@ export default function GerirRegistros({ x }: PropsGerirRegistros) {
   const [visibilidade, setVisibilidade] = useState(true);
 
   return (
-    <div className="bg-base-300 p-4 rounded-lg w-96 mr-4 mb-4 space-y-4">
-      <h1 className="text-xl font-bold">Registros - {x.name}</h1>
-      <div>
-        {adicionar ? (
-          <>
+    <div className="card bg-base-100/80 border border-base-300/40 shadow-xl rounded-2xl w-96 p-6 m-4 backdrop-blur-md transition hover:scale-[1.025]">
+      <div className="card-title flex flex-col items-center mb-2">
+        <span className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-2">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+            <rect
+              x="4"
+              y="4"
+              width="16"
+              height="16"
+              rx="4"
+              stroke="currentColor"
+              strokeWidth="2"
+              className="text-primary/40"
+            />
+            <rect
+              x="8"
+              y="8"
+              width="8"
+              height="8"
+              rx="2"
+              fill="currentColor"
+              className="text-primary/60"
+            />
+          </svg>
+        </span>
+        <h1 className="text-xl font-semibold text-base-content text-center">
+          Registros - <span className="text-primary">{x.name}</span>
+        </h1>
+      </div>
+      <div className="card-body p-0">
+        {adicionar && (
+          <div className="space-y-3">
+            <h2 className="text-lg font-semibold pt-2 text-base-content">
+              Adicionar novo Registro
+            </h2>
             <div className="form-control">
               <label className="label">
                 <span className="label-text">Registro</span>
@@ -37,7 +67,7 @@ export default function GerirRegistros({ x }: PropsGerirRegistros) {
               </label>
               <input
                 type="text"
-                placeholder="Qual o mentor que esta a registrar?"
+                placeholder="Qual o mentor que está a registrar?"
                 className="input input-bordered"
                 value={mentor}
                 onChange={(x) => setMentor(x.target.value)}
@@ -53,12 +83,11 @@ export default function GerirRegistros({ x }: PropsGerirRegistros) {
                 className="input input-bordered"
                 value={dia}
                 onChange={(x) => setDia(x.target.value)}
-                
               />
             </div>
             <div className="flex justify-between mt-4">
               <button
-                className="btn btn-error"
+                className="btn btn-error btn-sm"
                 onClick={() => {
                   setVisibilidade(true);
                   setAdicionar(false);
@@ -67,12 +96,12 @@ export default function GerirRegistros({ x }: PropsGerirRegistros) {
                 Cancelar
               </button>
               <button
-                className="btn btn-primary"
+                className="btn btn-success btn-sm"
                 onClick={async () => {
                   x.registrosSobreOAluno.push({
                     dia,
                     mentor,
-                    registro
+                    registro,
                   });
                   await fetch("/api/alunos", {
                     method: "PUT",
@@ -83,40 +112,38 @@ export default function GerirRegistros({ x }: PropsGerirRegistros) {
                       id: x.id,
                       name: x.name,
                       mentor: x.mentor,
-                      aluno: x.email,
+                      email: x.email,
                       instituicao: x.instituicao,
                       nivelDeEducacao: x.nivelDeEducacao,
                       avaliacoes: x.avaliacoes,
                       registrosSobreOAluno: x.registrosSobreOAluno,
                     }),
                   });
-                  setAdicionar(false)
-                  setVisibilidade(true)
+                  setAdicionar(false);
+                  setVisibilidade(true);
                 }}
               >
                 Registar
               </button>
             </div>
-          </>
-        ) : (
-          ""
+          </div>
         )}
-      </div>
-      <div className="flex justify-between">
-        <a href={`/registro/${x.id}`}>
-          <button className={`btn btn-primary ${visibilidade ? "" : "hidden"}`}>
-            Ver Registros
-          </button>
-        </a>
-        <button
-          className={`btn ${visibilidade ? "" : "hidden"}`}
-          onClick={() => {
-            setAdicionar(true);
-            setVisibilidade(false);
-          }}
+        <div
+          className={`flex justify-between mt-4 ${adicionar ? "hidden" : ""}`}
         >
-          Adicionar Registro
-        </button>
+          <a href={`/registro/${x.id}`}>
+            <button className="btn btn-primary btn-sm">Ver Registros</button>
+          </a>
+          <button
+            className="btn btn-outline btn-sm"
+            onClick={() => {
+              setAdicionar(true);
+              setVisibilidade(false);
+            }}
+          >
+            Adicionar Registro
+          </button>
+        </div>
       </div>
     </div>
   );
